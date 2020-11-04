@@ -8,22 +8,50 @@
 import SwiftUI
 
 struct SetGameView: View {
+    static let colorArray = [Color.green, Color.orange, Color.purple]
+
+    @ObservedObject var viewModel: SetGameViewModel
+    
     var body: some View {
-        Text("Game view placeholder")
+        VStack {
+            Text("Score: \(viewModel.countOfSetsFound)")
+            Grid(viewModel.dealtCards) { card in
+                CardView(content: card.content)
+                    .onTapGesture() {
+                        withAnimation(.linear) {
+                            viewModel.choose(card: card)
+                        }
+                    }
+                    .aspectRatio(contentMode:.fit)
+                    .padding(5.0)
+            }
             .padding()
+//            .foregroundColor(EmojiMemoryGame.themeColor)
+            Button(action: {
+                withAnimation(.easeInOut) {
+                    viewModel.newSetGame()
+                }
+            }, label: {
+                Text("New Game")
+            })
+        }.font(Font.system(size: 32))
+        .onAppear {
+            viewModel.initialDeal()
+        }
     }
 }
 
 struct CardView: View {
-    var shapeCount: Int
+    var content: SetCardContent
     
     var body: some View {
-        Text("card placeholder")
+        RoundedRectangle(cornerRadius: 5.0).foregroundColor(SetGameView.colorArray[content.colorIndex])
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        SetGameView()
+        let game = SetGameViewModel()
+        SetGameView(viewModel: game)
     }
 }

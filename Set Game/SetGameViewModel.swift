@@ -22,4 +22,27 @@ class SetGameViewModel : ObservableObject {
             return SetCardContent(fillStyle: fillStyle, shapeStyle: shapeStyle, shapeCount: shapeCount, colorIndex: colorIndex)
         }
     }
+    
+    func newSetGame() {
+        model = SetGameViewModel.createSetGame()
+        model.initialDeal()
+    }
+    
+    func initialDeal() {
+        model.initialDeal()
+    }
+    
+    // MARK: -  Access to the model
+    var dealtCards: Array<SetGameModel<SetCardContent>.Card> {
+        model.dealtCards
+    }
+    
+    var countOfSetsFound: Int {
+        model.countOfSetsFound
+    }
+    
+    // MARK: - Intents
+    func choose(card: SetGameModel<SetCardContent>.Card) {
+        model.choose(card: card)
+    }
 }

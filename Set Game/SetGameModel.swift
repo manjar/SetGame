@@ -15,6 +15,11 @@ enum CardState {
 
 struct SetGameModel<CardContent> where CardContent : Equatable {
     private(set) var cards: Array<Card>
+    private(set) var countOfSetsFound: Int = 0
+    
+    var dealtCards: Array<Card> {
+        return cards.filter( { $0.cardState == .dealt } )
+    }
     
     struct Card: Identifiable {
         var cardState: CardState = .inDeck
@@ -29,11 +34,22 @@ struct SetGameModel<CardContent> where CardContent : Equatable {
                 for shapeCountIndex in 0..<numberOfShapeCounts {
                     for colorIndexesIndex in 0..<numberOfColorIndexes {
                         let content = cardContentFactory(fillStyleIndex, shapeStyleIndex, shapeCountIndex, colorIndexesIndex)
-                        cards.append(Card(content: content, id: (fillStyleIndex * 2) + (shapeStyleIndex * 3) + (shapeCountIndex * 5) + (colorIndexesIndex * 7)))
+                        let idToUse = ((fillStyleIndex + 1) * 11) + ((shapeStyleIndex + 1) * 13) + ((shapeCountIndex + 1) * 17) + ((colorIndexesIndex + 1) * 19)
+                        cards.append(Card(content: content, id: idToUse))
                     }
                 }
             }
         }
         cards.shuffle()
+    }
+    
+    mutating func initialDeal() {
+        for cardIndex in 0..<12 {
+            cards[cardIndex].cardState = .dealt
+        }
+    }
+    
+    mutating func choose(card: Card) {
+        print("card chosen \(card)");
     }
 }
