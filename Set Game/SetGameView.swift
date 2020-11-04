@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  SetGameView.swift
 //  Set Game
 //
 //  Created by Eli Manjarrez on 10/29/20.
@@ -7,15 +7,23 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct SetGameView: View {
     var body: some View {
-        Text("Hello, world!")
+        Text("Game view placeholder")
             .padding()
+    }
+}
+
+struct CardView: View {
+    var shapeCount: Int
+    
+    var body: some View {
+        Text("card placeholder")
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        SetGameView()
     }
 }
