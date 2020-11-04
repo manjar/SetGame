@@ -32,6 +32,10 @@ class SetGameViewModel : ObservableObject {
         model.initialDeal()
     }
     
+    func dealThree() {
+        model.dealThree()
+    }
+    
     // MARK: -  Access to the model
     var dealtCards: Array<SetGameModel<SetCardContent>.Card> {
         model.dealtCards

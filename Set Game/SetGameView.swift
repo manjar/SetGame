@@ -29,12 +29,19 @@ struct SetGameView: View {
 //            .foregroundColor(EmojiMemoryGame.themeColor)
             Button(action: {
                 withAnimation(.easeInOut) {
+                    viewModel.dealThree()
+                }
+            }, label: {
+                Text("Deal three")
+            })
+            Button(action: {
+                withAnimation(.easeInOut) {
                     viewModel.newSetGame()
                 }
             }, label: {
                 Text("New Game")
             })
-        }.font(Font.system(size: 32))
+        }.font(Font.system(size: 24))
         .onAppear {
             viewModel.initialDeal()
         }

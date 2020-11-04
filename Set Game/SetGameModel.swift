@@ -21,6 +21,10 @@ struct SetGameModel<CardContent> where CardContent : Equatable {
         return cards.filter( { $0.cardState == .dealt } )
     }
     
+    var undealtCards: Array<Card> {
+        return cards.filter( { $0.cardState == .inDeck } )
+    }
+
     struct Card: Identifiable {
         var cardState: CardState = .inDeck
         var content: CardContent
@@ -34,7 +38,7 @@ struct SetGameModel<CardContent> where CardContent : Equatable {
                 for shapeCountIndex in 0..<numberOfShapeCounts {
                     for colorIndexesIndex in 0..<numberOfColorIndexes {
                         let content = cardContentFactory(fillStyleIndex, shapeStyleIndex, shapeCountIndex, colorIndexesIndex)
-                        let idToUse = ((fillStyleIndex + 1) * 11) + ((shapeStyleIndex + 1) * 13) + ((shapeCountIndex + 1) * 17) + ((colorIndexesIndex + 1) * 19)
+                        let idToUse = UUID().hashValue
                         cards.append(Card(content: content, id: idToUse))
                     }
                 }
@@ -45,6 +49,18 @@ struct SetGameModel<CardContent> where CardContent : Equatable {
     
     mutating func initialDeal() {
         for cardIndex in 0..<12 {
+            cards[cardIndex].cardState = .dealt
+        }
+    }
+    
+    mutating func dealThree() {
+        let numberOfCardsToDeal = min(undealtCards.count, 3)
+        var indexesOfCardsToDeal = [Int]()
+        for cardIndex in 0..<numberOfCardsToDeal {
+            let cardToDeal = undealtCards[cardIndex]
+            indexesOfCardsToDeal.append(cards.firstIndex(matching:cardToDeal)!)
+        }
+        for cardIndex in indexesOfCardsToDeal {
             cards[cardIndex].cardState = .dealt
         }
     }
