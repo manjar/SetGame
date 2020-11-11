@@ -10,7 +10,9 @@ import Foundation
 enum CardState {
     case inDeck
     case dealt
+    case selected
     case matched
+    case discarded
 }
 
 struct SetGameModel<CardContent> where CardContent : Equatable {
@@ -18,11 +20,15 @@ struct SetGameModel<CardContent> where CardContent : Equatable {
     private(set) var countOfSetsFound: Int = 0
     
     var dealtCards: Array<Card> {
-        return cards.filter( { $0.cardState == .dealt } )
+        return cards.filter( { $0.cardState != .inDeck && $0.cardState != .matched } )
     }
     
     var undealtCards: Array<Card> {
         return cards.filter( { $0.cardState == .inDeck } )
+    }
+
+    var selectedCards: Array<Card> {
+        return cards.filter( { $0.cardState == .selected } )
     }
 
     struct Card: Identifiable {
@@ -37,7 +43,7 @@ struct SetGameModel<CardContent> where CardContent : Equatable {
             for shapeStyleIndex in 0..<numberOfShapeStyles {
                 for shapeCountIndex in 0..<numberOfShapeCounts {
                     for colorIndexesIndex in 0..<numberOfColorIndexes {
-                        let content = cardContentFactory(fillStyleIndex, shapeStyleIndex, shapeCountIndex, colorIndexesIndex)
+                        let content = cardContentFactory(fillStyleIndex, shapeStyleIndex, shapeCountIndex + 1, colorIndexesIndex)
                         let idToUse = UUID().hashValue
                         cards.append(Card(content: content, id: idToUse))
                     }
@@ -65,7 +71,46 @@ struct SetGameModel<CardContent> where CardContent : Equatable {
         }
     }
     
-    mutating func choose(card: Card) {
-        print("card chosen \(card)");
+    mutating func select(card: Card) {
+        clearPreviousSet()
+        toggleCardSelectedState(card: card)
+        checkForSetAndHandle()
     }
+    
+    mutating func toggleCardSelectedState(card: Card) {
+        if let indexOfCardToSelect = cards.firstIndex(matching: card) {
+            switch card.cardState {
+            case .dealt:
+                cards[indexOfCardToSelect].cardState = .selected
+            case .selected:
+                cards[indexOfCardToSelect].cardState = .dealt
+            default:
+                break
+            }
+            print("card chosen \(card)");
+
+        }
+    }
+    
+    mutating func clearPreviousSet() {
+        var indexesOfCardsToDiscard = [Int]()
+        for cardIndex in 0..<selectedCards.count {
+            let cardToDiscard = selectedCards[cardIndex]
+            indexesOfCardsToDiscard.append(cards.firstIndex(matching:cardToDiscard)!)
+        }
+        for cardIndex in indexesOfCardsToDiscard {
+            cards[cardIndex].cardState = .discarded
+        }
+    }
+    
+    mutating func checkForSetAndHandle() {
+        let countOfSelectedCards = selectedCards.count
+        guard countOfSelectedCards == 3 else {
+            return
+        }
+        let firstCard  = selectedCards[0]
+        let secondCard = selectedCards[1]
+        let thirdCard  = selectedCards[2]
+    }
+    
 }

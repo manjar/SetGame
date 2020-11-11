@@ -46,7 +46,7 @@ class SetGameViewModel : ObservableObject {
     }
     
     // MARK: - Intents
-    func choose(card: SetGameModel<SetCardContent>.Card) {
-        model.choose(card: card)
+    func select(card: SetGameModel<SetCardContent>.Card) {
+        model.select(card: card)
     }
 }
