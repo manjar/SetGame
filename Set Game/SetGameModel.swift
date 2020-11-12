@@ -64,6 +64,9 @@ struct SetGameModel<CardContent> where CardContent : DeeplyComparable {
     }
     
     mutating func dealThree() {
+        guard !clearPreviousSet() else {
+            return
+        }
         let numberOfCardsToDeal = min(undealtCards.count, 3)
         var indexesOfCardsToDeal = [Int]()
         for cardIndex in 0..<numberOfCardsToDeal {
@@ -97,11 +100,11 @@ struct SetGameModel<CardContent> where CardContent : DeeplyComparable {
         }
     }
     
-    mutating func clearPreviousSet() {
+    @discardableResult mutating func clearPreviousSet() -> Bool {
         var indexesOfCardsToDiscard = [Int]()
         let countOfSelectedCards = matchedCards.count
         guard countOfSelectedCards == 3 else {
-            return
+            return false
         }
         for cardIndex in 0..<countOfSelectedCards {
             let cardToDiscard = matchedCards[cardIndex]
@@ -116,6 +119,8 @@ struct SetGameModel<CardContent> where CardContent : DeeplyComparable {
                 cards.swapAt(cardIndex, indexOfNextCardToDeal)
             }
         }
+        
+        return true
     }
     
     

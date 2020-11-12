@@ -29,12 +29,12 @@ struct SetGameView: View {
             .padding()
 //            .foregroundColor(EmojiMemoryGame.themeColor)
             Button(action: {
-                withAnimation(.easeInOut) {
+                withAnimation(.easeInOut(duration:0.3)) {
                     viewModel.dealThree()
                 }
             }, label: {
                 Text("Deal three")
-            })
+            }).disabled(viewModel.undealtCards.count == 0)
             Button(action: {
                 withAnimation(.easeInOut) {
                     viewModel.newSetGame()
@@ -43,10 +43,12 @@ struct SetGameView: View {
                 Text("New Game")
             })
         }
-        .font(Font.system(size: 24))
         .onAppear {
-            viewModel.initialDeal()
+            withAnimation(.easeInOut(duration: 0.3)) {
+                viewModel.initialDeal()
+            }
         }
+        .font(Font.system(size: 24))
     }
 }
 

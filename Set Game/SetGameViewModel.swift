@@ -60,6 +60,10 @@ class SetGameViewModel : ObservableObject {
         model.cardsOnBoard
     }
     
+    var undealtCards: Array<SetGameModel<SetCardContent>.Card> {
+        model.undealtCards
+    }
+    
     var countOfSetsFound: Int {
         model.countOfSetsFound
     }
