@@ -7,7 +7,26 @@
 
 import Foundation
 
-struct SetCardContent: Equatable {
+struct SetCardContent: DeeplyComparable {
+    func countOfValues() -> Int {
+        return 4
+    }
+    
+    func valueAtIndex(index: Int) -> Int? {
+        switch index {
+        case 0:
+            return fillStyle
+        case 1:
+            return shapeStyle
+        case 2:
+            return shapeCount
+        case 3:
+            return colorIndex
+        default:
+            return nil
+        }
+    }
+    
     let fillStyle: Int
     let shapeStyle: Int
     let shapeCount: Int

@@ -15,7 +15,7 @@ enum CardState {
     case discarded
 }
 
-struct SetGameModel<CardContent> where CardContent : Equatable {
+struct SetGameModel<CardContent> where CardContent : DeeplyComparable {
     private(set) var cards: Array<Card>
     private(set) var countOfSetsFound: Int = 0
     
@@ -29,6 +29,10 @@ struct SetGameModel<CardContent> where CardContent : Equatable {
 
     var selectedCards: Array<Card> {
         return cards.filter( { $0.cardState == .selected } )
+    }
+    
+    var matchedCards: Array<Card> {
+        return cards.filter( { $0.cardState == .matched } )
     }
 
     struct Card: Identifiable {
@@ -73,6 +77,7 @@ struct SetGameModel<CardContent> where CardContent : Equatable {
     
     mutating func select(card: Card) {
         clearPreviousSet()
+        clearSelectedCards()
         toggleCardSelectedState(card: card)
         checkForSetAndHandle()
     }
@@ -94,12 +99,32 @@ struct SetGameModel<CardContent> where CardContent : Equatable {
     
     mutating func clearPreviousSet() {
         var indexesOfCardsToDiscard = [Int]()
-        for cardIndex in 0..<selectedCards.count {
-            let cardToDiscard = selectedCards[cardIndex]
+        let countOfSelectedCards = matchedCards.count
+        guard countOfSelectedCards == 3 else {
+            return
+        }
+        for cardIndex in 0..<countOfSelectedCards {
+            let cardToDiscard = matchedCards[cardIndex]
             indexesOfCardsToDiscard.append(cards.firstIndex(matching:cardToDiscard)!)
         }
         for cardIndex in indexesOfCardsToDiscard {
             cards[cardIndex].cardState = .discarded
+        }
+    }
+    
+    
+    mutating func clearSelectedCards() {
+        var indexesOfCardsToDiscard = [Int]()
+        let countOfSelectedCards = selectedCards.count
+        guard countOfSelectedCards == 3 else {
+            return
+        }
+        for cardIndex in 0..<countOfSelectedCards {
+            let cardToDiscard = selectedCards[cardIndex]
+            indexesOfCardsToDiscard.append(cards.firstIndex(matching:cardToDiscard)!)
+        }
+        for cardIndex in indexesOfCardsToDiscard {
+            cards[cardIndex].cardState = .dealt
         }
     }
     
@@ -108,9 +133,25 @@ struct SetGameModel<CardContent> where CardContent : Equatable {
         guard countOfSelectedCards == 3 else {
             return
         }
+        
         let firstCard  = selectedCards[0]
         let secondCard = selectedCards[1]
         let thirdCard  = selectedCards[2]
+        var validSet = true
+        for comparablePropertyIndex in 0..<firstCard.content.countOfValues() {
+            var valueHolder = Set<Int>()
+            valueHolder.insert(firstCard.content.valueAtIndex(index: comparablePropertyIndex)!)
+            valueHolder.insert(secondCard.content.valueAtIndex(index: comparablePropertyIndex)!)
+            valueHolder.insert(thirdCard.content.valueAtIndex(index: comparablePropertyIndex)!)
+            if (valueHolder.count == 2) {
+                validSet = false
+                break
+            }
+        }
+        if (validSet) {
+            // process the set
+            print("Found a valid set")
+        }
     }
     
 }

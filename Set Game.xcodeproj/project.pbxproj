@@ -19,6 +19,7 @@
 		B45E49B7254B47F500BF23AA /* SetGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45E49B6254B47F500BF23AA /* SetGameModel.swift */; };
 		B45E49BC25534B2400BF23AA /* SetGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45E49BB25534B2400BF23AA /* SetGameViewModel.swift */; };
 		B45E49C42553893200BF23AA /* Diamond.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45E49C32553893200BF23AA /* Diamond.swift */; };
+		B4A0184B255CB19700ACB6F0 /* DeeplyComparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A0184A255CB19700ACB6F0 /* DeeplyComparable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		B45E49B6254B47F500BF23AA /* SetGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameModel.swift; sourceTree = "<group>"; };
 		B45E49BB25534B2400BF23AA /* SetGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameViewModel.swift; sourceTree = "<group>"; };
 		B45E49C32553893200BF23AA /* Diamond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diamond.swift; sourceTree = "<group>"; };
+		B4A0184A255CB19700ACB6F0 /* DeeplyComparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplyComparable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 				B45E49A8254B474900BF23AA /* GridLayout.swift */,
 				B45E49C32553893200BF23AA /* Diamond.swift */,
 				B45E49AE254B478B00BF23AA /* Array+Identifiable.swift */,
+				B4A0184A255CB19700ACB6F0 /* DeeplyComparable.swift */,
 				B45E497A254B469300BF23AA /* Assets.xcassets */,
 				B45E497F254B469300BF23AA /* Info.plist */,
 				B45E497C254B469300BF23AA /* Preview Content */,
@@ -281,6 +284,7 @@
 				B45E4979254B469000BF23AA /* SetGameView.swift in Sources */,
 				B45E49B7254B47F500BF23AA /* SetGameModel.swift in Sources */,
 				B45E4977254B469000BF23AA /* SetGameApp.swift in Sources */,
+				B4A0184B255CB19700ACB6F0 /* DeeplyComparable.swift in Sources */,
 				B45E49C42553893200BF23AA /* Diamond.swift in Sources */,
 				B45E49A9254B474900BF23AA /* Grid.swift in Sources */,
 				B45E49AA254B474900BF23AA /* GridLayout.swift in Sources */,
