@@ -42,7 +42,8 @@ struct SetGameView: View {
             }, label: {
                 Text("New Game")
             })
-        }.font(Font.system(size: 24))
+        }
+        .font(Font.system(size: 24))
         .onAppear {
             viewModel.initialDeal()
         }
@@ -58,13 +59,20 @@ struct CardView: View {
     @ViewBuilder var body: some View {
         GeometryReader { geometry in
             body(for: geometry.size)
-        }
+        }.transition(.offset(randomSizeForOffset()))
+    }
+    
+    func randomSizeForOffset() -> CGSize {
+        let randomDouble = Double.random(in: 0..<1)
+        let directionInRadians = randomDouble * 2.0 * Double.pi
+        let returnSize = CGSize(width: sin(directionInRadians) * 1000.0, height: cos(directionInRadians) * 1000.0)
+        return returnSize
     }
     
     @ViewBuilder
     private func body(for size:CGSize) -> some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 5.0).foregroundColor(card.cardState == .dealt ? Color.white : Color.init(red: 0.0, green: 0.0, blue: 1.0, opacity: 0.25))
+            RoundedRectangle(cornerRadius: 5.0).foregroundColor(card.cardState == .dealt ? Color.white : colorForCardState(card.cardState))
             RoundedRectangle(cornerRadius: 5.0).stroke(Color.black)
             VStack {
                 ForEach(0 ..< card.content.shapeCount) {_ in
@@ -76,6 +84,17 @@ struct CardView: View {
                 }
             }
             .padding(5.0)
+        }
+    }
+    
+    func colorForCardState(_ cardState: CardState) -> Color {
+        switch cardState {
+        case .matched:
+            return Color.green.opacity(cardColorOpacity)
+        case .selected:
+            return Color.blue.opacity(cardColorOpacity)
+        default:
+            return Color.white.opacity(cardColorOpacity)
         }
     }
     
@@ -107,16 +126,8 @@ struct CardView: View {
         }
     }
     
-    func colorForCardState(_ cardState:CardState) -> Color {
-        switch cardState {
-        case .selected:
-            return Color.blue.opacity(0.3)
-        default:
-            return Color.white
-        }
-    }
-    
     private let itemSizeFactor: CGFloat = 0.2
+    private let cardColorOpacity = 0.3
 }
 
 struct ContentView_Previews: PreviewProvider {

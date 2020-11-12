@@ -109,6 +109,12 @@ struct SetGameModel<CardContent> where CardContent : DeeplyComparable {
         }
         for cardIndex in indexesOfCardsToDiscard {
             cards[cardIndex].cardState = .discarded
+            if undealtCards.count > 0 {
+                let nextCardToDeal = undealtCards[0]
+                let indexOfNextCardToDeal = cards.firstIndex(matching:nextCardToDeal)!
+                cards[indexOfNextCardToDeal].cardState = .dealt
+                cards.swapAt(cardIndex, indexOfNextCardToDeal)
+            }
         }
     }
     
