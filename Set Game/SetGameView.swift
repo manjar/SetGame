@@ -71,7 +71,7 @@ struct CardView: View {
                     ZStack {
                         shape.foregroundColor(.white)
                         shape.foregroundColor(SetGameView.colorArray[card.content.colorIndex].opacity(SetGameView.opacityArray[card.content.fillStyle]))
-                        shape.stroke()
+                        shape.stroke().foregroundColor(SetGameView.colorArray[card.content.colorIndex])
                     }.frame(width: size.width * itemSizeFactor, height: size.width * itemSizeFactor, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                 }
             }

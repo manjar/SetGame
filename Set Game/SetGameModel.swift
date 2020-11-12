@@ -19,8 +19,8 @@ struct SetGameModel<CardContent> where CardContent : DeeplyComparable {
     private(set) var cards: Array<Card>
     private(set) var countOfSetsFound: Int = 0
     
-    var dealtCards: Array<Card> {
-        return cards.filter( { $0.cardState != .inDeck && $0.cardState != .matched } )
+    var cardsOnBoard: Array<Card> {
+        return cards.filter( { $0.cardState != .inDeck && $0.cardState != .discarded} )
     }
     
     var undealtCards: Array<Card> {
@@ -149,9 +149,16 @@ struct SetGameModel<CardContent> where CardContent : DeeplyComparable {
             }
         }
         if (validSet) {
-            // process the set
-            print("Found a valid set")
+            handleSet(firstCard, secondCard, thirdCard)
         }
+    }
+    
+    mutating func handleSet(_ card1: Card, _ card2: Card, _ card3: Card) {
+        for aCard in [card1, card2, card3] {
+            let indexOfCardToMatch = cards.firstIndex(matching:aCard)!
+            cards[indexOfCardToMatch].cardState = .matched
+        }
+        countOfSetsFound += 1
     }
     
 }

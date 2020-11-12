@@ -57,7 +57,7 @@ class SetGameViewModel : ObservableObject {
     
     // MARK: -  Access to the model
     var dealtCards: Array<SetGameModel<SetCardContent>.Card> {
-        model.dealtCards
+        model.cardsOnBoard
     }
     
     var countOfSetsFound: Int {
